@@ -17,8 +17,6 @@
       --glass-2:rgba(255,255,255,0.05);
       --glass-border:rgba(255,255,255,0.14);
       --shadow:0 18px 45px rgba(0,0,0,0.35);
-      --danger:#ff5d7a;
-      --warning:#ffd36f;
       --text:#ffffff;
       --muted:rgba(255,255,255,0.74);
       --card:rgba(255,255,255,0.06);
@@ -42,15 +40,8 @@
       --overlay:rgba(255,255,255,0.55);
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
 
     body{
       min-height:100vh;
@@ -64,6 +55,8 @@
       overflow-x:hidden;
       transition:background 0.35s ease, color 0.35s ease;
     }
+
+    .hidden{ display:none !important; }
 
     .bg-hearts{
       position:fixed;
@@ -94,34 +87,90 @@
     }
 
     @keyframes floatUp{
-      0%{
-        transform:translateY(0) translateX(0) scale(0.7) rotate(0deg);
-        opacity:0;
-      }
-      10%{
-        opacity:1;
-      }
-      50%{
-        transform:translateY(-50vh) translateX(18px) scale(1.05) rotate(15deg);
-      }
-      100%{
-        transform:translateY(-115vh) translateX(-14px) scale(1.35) rotate(40deg);
-        opacity:0;
-      }
+      0%{ transform:translateY(0) translateX(0) scale(0.7) rotate(0deg); opacity:0; }
+      10%{ opacity:1; }
+      50%{ transform:translateY(-50vh) translateX(18px) scale(1.05) rotate(15deg); }
+      100%{ transform:translateY(-115vh) translateX(-14px) scale(1.35) rotate(40deg); opacity:0; }
     }
 
     @keyframes twinkle{
-      0%{
-        transform:translateY(0) scale(0.6);
-        opacity:0;
-      }
-      20%{
-        opacity:1;
-      }
-      100%{
-        transform:translateY(-30vh) scale(1.35);
-        opacity:0;
-      }
+      0%{ transform:translateY(0) scale(0.6); opacity:0; }
+      20%{ opacity:1; }
+      100%{ transform:translateY(-30vh) scale(1.35); opacity:0; }
+    }
+
+    @keyframes fadeInUp{
+      from{ opacity:0; transform:translateY(30px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .auth-screen{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      position:relative;
+      z-index:2;
+    }
+
+    .auth-box{
+      width:min(440px, 100%);
+      border-radius:30px;
+      padding:32px 24px;
+      text-align:center;
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      backdrop-filter:blur(16px);
+      box-shadow:var(--shadow);
+      animation:fadeInUp 0.8s ease;
+    }
+
+    .auth-title{
+      font-size:32px;
+      margin-bottom:10px;
+    }
+
+    .auth-sub{
+      font-size:15px;
+      color:var(--muted);
+      margin-bottom:20px;
+      line-height:1.6;
+    }
+
+    .auth-input{
+      width:100%;
+      margin-bottom:12px;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--glass-border);
+      background:rgba(255,255,255,0.09);
+      color:var(--text);
+      outline:none;
+      font-size:15px;
+    }
+
+    .auth-input::placeholder{ color:var(--muted); }
+
+    .auth-btn{
+      width:100%;
+      border:none;
+      border-radius:16px;
+      padding:14px 18px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      background:linear-gradient(135deg, #ff7aa8, #ff9ec0);
+      color:white;
+      box-shadow:0 12px 24px rgba(255,122,168,0.25);
+      margin-top:4px;
+    }
+
+    .auth-msg{
+      min-height:24px;
+      margin-top:14px;
+      color:var(--pink-soft);
+      font-size:14px;
     }
 
     .intro{
@@ -169,17 +218,6 @@
       color:var(--muted);
     }
 
-    @keyframes fadeInUp{
-      from{
-        opacity:0;
-        transform:translateY(30px);
-      }
-      to{
-        opacity:1;
-        transform:translateY(0);
-      }
-    }
-
     .wrap{
       width:min(1120px, 92%);
       margin:0 auto 60px;
@@ -194,10 +232,7 @@
       box-shadow:var(--shadow);
     }
 
-    .hero{
-      margin-top:10px;
-      margin-bottom:32px;
-    }
+    .hero{ margin-top:10px; margin-bottom:32px; }
 
     .hero-card{
       border-radius:30px;
@@ -311,7 +346,7 @@
       margin-top:10px;
     }
 
-    .btn, .mini-btn, .icon-btn, .theme-btn, .admin-toggle, .lightbox-close{
+    .btn,.mini-btn,.icon-btn,.theme-btn,.admin-toggle,.lightbox-close{
       transition:0.22s ease;
     }
 
@@ -324,11 +359,7 @@
       font-weight:600;
     }
 
-    .btn:hover,
-    .mini-btn:hover,
-    .icon-btn:hover,
-    .theme-btn:hover,
-    .admin-toggle:hover{
+    .btn:hover,.mini-btn:hover,.icon-btn:hover,.theme-btn:hover,.admin-toggle:hover{
       transform:translateY(-2px);
     }
 
@@ -338,7 +369,7 @@
       box-shadow:0 12px 24px rgba(255,122,168,0.25);
     }
 
-    .btn-secondary{
+    .btn-secondary,.theme-btn,.mini-btn,.icon-btn{
       background:var(--card);
       color:var(--text);
       border:1px solid var(--glass-border);
@@ -349,9 +380,6 @@
       border-radius:999px;
       padding:12px 18px;
       cursor:pointer;
-      color:var(--text);
-      background:var(--card);
-      border:1px solid var(--glass-border);
       font-weight:600;
     }
 
@@ -386,17 +414,6 @@
       gap:10px;
       flex-wrap:wrap;
       margin-bottom:14px;
-    }
-
-    .mini-btn{
-      border:none;
-      border-radius:999px;
-      padding:10px 16px;
-      background:var(--card);
-      color:var(--text);
-      border:1px solid var(--glass-border);
-      cursor:pointer;
-      font-size:14px;
     }
 
     .song-list{
@@ -444,10 +461,6 @@
       font-size:13px;
     }
 
-    body.light-theme .song-index{
-      background:rgba(255,105,160,0.12);
-    }
-
     .song-title{
       font-size:15px;
       white-space:nowrap;
@@ -456,7 +469,7 @@
       color:var(--text);
     }
 
-    .song-actions{
+    .song-actions,.story-actions,.photo-actions,.slide-controls{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
@@ -468,20 +481,10 @@
       padding:8px 12px;
       font-size:13px;
       cursor:pointer;
-      color:var(--text);
-      background:var(--card);
-      border:1px solid var(--glass-border);
     }
 
-    .icon-btn.edit{
-      background:rgba(255,211,111,0.12);
-      border-color:rgba(255,211,111,0.22);
-    }
-
-    .icon-btn.delete{
-      background:rgba(255,93,122,0.12);
-      border-color:rgba(255,93,122,0.22);
-    }
+    .icon-btn.edit{ background:rgba(255,211,111,0.12); border-color:rgba(255,211,111,0.22); }
+    .icon-btn.delete{ background:rgba(255,93,122,0.12); border-color:rgba(255,93,122,0.22); }
 
     .section{
       border-radius:30px;
@@ -535,9 +538,7 @@
       box-shadow:0 10px 25px rgba(0,0,0,0.18);
     }
 
-    .admin-panel.show{
-      display:block;
-    }
+    .admin-panel.show{ display:block; }
 
     .admin-title{
       margin-bottom:14px;
@@ -570,8 +571,7 @@
       gap:12px;
     }
 
-    .form-grid input,
-    .form-grid textarea{
+    .form-grid input,.form-grid textarea{
       width:100%;
       padding:14px 16px;
       border-radius:14px;
@@ -582,21 +582,8 @@
       outline:none;
     }
 
-    body.light-theme .form-grid input,
-    body.light-theme .form-grid textarea{
-      background:rgba(255,255,255,0.72);
-    }
-
-    .form-grid input::placeholder,
-    .form-grid textarea::placeholder{
-      color:var(--muted);
-    }
-
-    .form-grid textarea{
-      min-height:110px;
-      resize:vertical;
-      font-family:inherit;
-    }
+    .form-grid input::placeholder,.form-grid textarea::placeholder{ color:var(--muted); }
+    .form-grid textarea{ min-height:110px; resize:vertical; font-family:inherit; }
 
     .timeline{
       position:relative;
@@ -665,13 +652,6 @@
       white-space:pre-wrap;
     }
 
-    .story-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
     .slideshow-wrap{
       position:relative;
       border-radius:26px;
@@ -692,9 +672,7 @@
       transition:transform 0.35s ease;
     }
 
-    .slideshow-wrap:hover .slideshow-img{
-      transform:scale(1.02);
-    }
+    .slideshow-wrap:hover .slideshow-img{ transform:scale(1.02); }
 
     .slide-overlay{
       position:absolute;
@@ -711,9 +689,7 @@
       backdrop-filter:blur(8px);
     }
 
-    body.light-theme .slide-overlay{
-      background:rgba(255,255,255,0.5);
-    }
+    body.light-theme .slide-overlay{ background:rgba(255,255,255,0.5); }
 
     .slide-title{
       font-size:15px;
@@ -721,15 +697,7 @@
       font-weight:600;
     }
 
-    body.light-theme .slide-title{
-      color:var(--text);
-    }
-
-    .slide-controls{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
+    body.light-theme .slide-title{ color:var(--text); }
 
     .gallery{
       display:grid;
@@ -755,9 +723,7 @@
       cursor:pointer;
     }
 
-    .photo-card:hover img{
-      transform:scale(1.05);
-    }
+    .photo-card:hover img{ transform:scale(1.05); }
 
     .photo-overlay{
       position:absolute;
@@ -781,11 +747,6 @@
       flex:1;
     }
 
-    .photo-actions{
-      display:flex;
-      gap:8px;
-    }
-
     .lightbox{
       position:fixed;
       inset:0;
@@ -797,9 +758,7 @@
       z-index:9999;
     }
 
-    .lightbox.show{
-      display:flex;
-    }
+    .lightbox.show{ display:flex; }
 
     .lightbox-box{
       position:relative;
@@ -857,342 +816,270 @@
     }
 
     @media (max-width: 980px){
-      .admin-grid{
-        grid-template-columns:1fr;
-      }
+      .admin-grid{ grid-template-columns:1fr; }
     }
 
     @media (max-width: 860px){
-      .playlist-player{
-        height:300px;
-      }
-
-      .slideshow-img{
-        height:360px;
-      }
+      .playlist-player{ height:300px; }
+      .slideshow-img{ height:360px; }
     }
 
     @media (max-width: 720px){
-      .counter{
-        grid-template-columns:repeat(2, 1fr);
-      }
-
-      .section{
-        padding:24px 16px;
-      }
-
-      .hero-card{
-        padding:28px 16px;
-      }
-
-      .timeline{
-        padding-left:18px;
-      }
-
-      .timeline-item{
-        padding-left:22px;
-      }
-
-      .timeline-top{
-        flex-direction:column;
-      }
-
-      .song-card{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .song-actions{
-        width:100%;
-      }
-
-      .song-actions .icon-btn{
-        flex:1;
-      }
-
-      .photo-overlay{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .photo-actions .icon-btn{
-        flex:1;
-      }
-
-      .slide-overlay{
-        flex-direction:column;
-        align-items:stretch;
-      }
+      .counter{ grid-template-columns:repeat(2, 1fr); }
+      .section{ padding:24px 16px; }
+      .hero-card{ padding:28px 16px; }
+      .timeline{ padding-left:18px; }
+      .timeline-item{ padding-left:22px; }
+      .timeline-top{ flex-direction:column; }
+      .song-card{ flex-direction:column; align-items:flex-start; }
+      .song-actions{ width:100%; }
+      .song-actions .icon-btn{ flex:1; }
+      .photo-overlay{ flex-direction:column; align-items:stretch; }
+      .photo-actions .icon-btn{ flex:1; }
+      .slide-overlay{ flex-direction:column; align-items:stretch; }
     }
 
     @media (max-width: 520px){
-      .intro-box{
-        padding:34px 18px;
-      }
-
-      .intro-text,
-      .subtitle{
-        font-size:16px;
-      }
-
-      .title{
-        font-size:32px;
-      }
-
-      .playlist-player{
-        height:220px;
-      }
-
-      .slideshow-img{
-        height:240px;
-      }
-
-      .counter{
-        gap:10px;
-      }
-
-      .time-box{
-        border-radius:16px;
-        padding:16px 8px;
-      }
-
-      .time-num{
-        font-size:26px;
-      }
-
-      .btn-row,
-      .top-tools{
-        flex-direction:column;
-      }
-
-      .btn,
-      .theme-btn{
-        width:100%;
-      }
+      .intro-box{ padding:34px 18px; }
+      .intro-text,.subtitle{ font-size:16px; }
+      .title{ font-size:32px; }
+      .playlist-player{ height:220px; }
+      .slideshow-img{ height:240px; }
+      .counter{ gap:10px; }
+      .time-box{ border-radius:16px; padding:16px 8px; }
+      .time-num{ font-size:26px; }
+      .btn-row,.top-tools{ flex-direction:column; }
+      .btn,.theme-btn{ width:100%; }
     }
   </style>
 </head>
 <body>
   <div class="bg-hearts" id="bgHearts"></div>
 
-  <div class="intro">
-    <div class="intro-box">
-      <div class="intro-small">For My Love</div>
-      <h1 class="intro-title">Happy 1 Year Anniversary 💖</h1>
-      <p class="intro-text">Чамтай өнгөрүүлсэн нэг жил миний амьдралын хамгийн гоё бүлэг байсан.</p>
+  <div id="authScreen" class="auth-screen hidden">
+    <div class="auth-box">
+      <div class="intro-small">Private Login</div>
+      <h1 class="auth-title">💖 Welcome 💖</h1>
+      <p class="auth-sub">Энэ сайтыг үзэхийн тулд email, password-оор нэвтэрнэ үү.</p>
+      <input class="auth-input" id="emailInput" type="email" placeholder="Email">
+      <input class="auth-input" id="passwordInput" type="password" placeholder="Password">
+      <button class="auth-btn" id="loginBtn">Login / Sign up</button>
+      <div class="auth-msg" id="authMsg"></div>
     </div>
   </div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="glass hero-card reveal">
-        <div class="hero-glow"></div>
-
-        <div class="top-tools">
-          <button class="theme-btn" onclick="toggleTheme()">🌙 / ☀ Theme солих</button>
-          <button class="theme-btn" onclick="showPlaylist()">🎵 Playlist</button>
-          <button class="theme-btn" onclick="scrollToGallery()">📸 Gallery</button>
-        </div>
-
-        <div class="tag">Our First Anniversary</div>
-        <h1 class="title"><span class="names">Хулан ❤️ Хүсэлбилэг</span></h1>
-        <div class="since">Since 2025.03.21 21:39 • together forever 💖</div>
-
-        <p class="subtitle">
-          Бидний хамт өнгөрүүлсэн мөч бүхэн энгийн нэгэн дурсамж биш,
-          миний зүрхэнд хадгалагдсан хамгийн нандин үе мөч юм.
-        </p>
-
-        <div class="counter">
-          <div class="time-box">
-            <span class="time-num" id="days">0</span>
-            <span class="time-label">Өдөр</span>
-          </div>
-          <div class="time-box">
-            <span class="time-num" id="hours">0</span>
-            <span class="time-label">Цаг</span>
-          </div>
-          <div class="time-box">
-            <span class="time-num" id="minutes">0</span>
-            <span class="time-label">Минут</span>
-          </div>
-          <div class="time-box">
-            <span class="time-num" id="seconds">0</span>
-            <span class="time-label">Секунд</span>
-          </div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="scrollToStory()">Бидний түүхийг үзэх ✨</button>
-          <button class="btn btn-secondary" onclick="showPlaylist()">Бидний playlist 🎵</button>
-        </div>
-
-        <div class="music-status" id="musicStatus">
-          Background music auto play mode бэлэн байна 💞
-        </div>
-
-        <div class="playlist-box" id="playlistBox">
-          <iframe
-            id="playlistFrame"
-            class="playlist-player"
-            src=""
-            title="YouTube player"
-            allow="autoplay; encrypted-media"
-            allowfullscreen>
-          </iframe>
-
-          <div class="playlist-controls">
-            <button class="mini-btn" onclick="prevSong()">⏮ Өмнөх</button>
-            <button class="mini-btn" onclick="nextSong()">Дараагийн ⏭</button>
-            <button class="mini-btn" onclick="toggleAutoPlay()">🎧 Auto Play On/Off</button>
-          </div>
-
-          <div class="song-list" id="songList"></div>
-        </div>
+  <div id="siteContent" class="hidden">
+    <div class="intro">
+      <div class="intro-box">
+        <div class="intro-small">For My Love</div>
+        <h1 class="intro-title">Happy 1 Year Anniversary 💖</h1>
+        <p class="intro-text">Чамтай өнгөрүүлсэн нэг жил миний амьдралын хамгийн гоё бүлэг байсан.</p>
       </div>
-    </section>
-
-    <section class="glass section reveal" id="storySection">
-      <h2 class="section-title">Бидний түүх ✨</h2>
-      <p class="section-sub">Бидний хамгийн нандин мөчүүд энд хадгалагдана 💌</p>
-
-      <div class="admin-toggle-wrap">
-        <button class="admin-toggle" onclick="toggleAdminPanel()">⚙️ Admin Panel</button>
-      </div>
-
-      <div class="admin-panel" id="adminPanel">
-        <div class="admin-title">Admin Panel 💖</div>
-
-        <div class="admin-grid">
-          <div class="panel-box">
-            <h3>Шинэ түүх нэмэх</h3>
-            <div class="form-grid">
-              <input type="text" id="storyDate" placeholder="Огноо (ж: 2026.03.26)">
-              <input type="text" id="storyTitle" placeholder="Гарчиг">
-              <textarea id="storyText" placeholder="Тухайн дурсамжийн тайлбар..."></textarea>
-            </div>
-            <button class="mini-btn" style="margin-top:14px;" onclick="addStory()">+ Түүх нэмэх</button>
-          </div>
-
-          <div class="panel-box">
-            <h3>Шинэ дуу нэмэх</h3>
-            <div class="form-grid">
-              <input type="text" id="songTitleInput" placeholder="Дууны нэр">
-              <input type="text" id="songLinkInput" placeholder="YouTube link эсвэл video id">
-            </div>
-            <button class="mini-btn" style="margin-top:14px;" onclick="addSong()">+ Дуу нэмэх</button>
-            <div class="hint">YouTube link эсвэл зөвхөн video id оруулж болно.</div>
-          </div>
-
-          <div class="panel-box">
-            <h3>Шинэ зураг нэмэх</h3>
-            <div class="form-grid">
-              <input type="text" id="photoTitleInput" placeholder="Зургийн нэр">
-              <input type="file" id="photoFileInput" accept="image/*">
-            </div>
-            <button class="mini-btn" style="margin-top:14px;" onclick="addPhoto()">+ Зураг нэмэх</button>
-          </div>
-
-          <div class="panel-box">
-            <h3>Туслах товчнууд</h3>
-            <div class="form-grid">
-              <button class="mini-btn" onclick="showPlaylist()">Playlist харуулах</button>
-              <button class="mini-btn" onclick="scrollToGallery()">Gallery руу очих</button>
-              <button class="mini-btn" onclick="toggleSlideshow()">▶ / ⏸ Slideshow</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline" id="timeline"></div>
-    </section>
-
-    <section class="glass section reveal" id="gallerySection">
-      <h2 class="section-title">Slideshow 💞</h2>
-      <p class="section-sub">Зурагнууд автоматаар слайд хийгдэнэ. Зураг дээр дарвал томорч харагдана.</p>
-
-      <div class="slideshow-wrap">
-        <img id="slideshowImage" class="slideshow-img" src="" alt="slideshow image" onclick="openCurrentSlide()">
-        <div class="slide-overlay">
-          <div class="slide-title" id="slideTitle">Our Memory</div>
-          <div class="slide-controls">
-            <button class="mini-btn" onclick="prevSlide()">⏮ Prev</button>
-            <button class="mini-btn" onclick="nextSlide()">Next ⏭</button>
-            <button class="mini-btn" onclick="toggleSlideshow()">▶ / ⏸ Slideshow</button>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title" style="margin-top:22px;">Бидний дурсамжууд 📸</h2>
-      <p class="section-sub">Зураг дээр дарвал томорч харагдана 💖</p>
-
-      <div class="gallery" id="gallery"></div>
-    </section>
-
-    <div class="footer reveal">
-      Made with love for our first anniversary ❤️
     </div>
-  </main>
 
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <div class="lightbox-box">
-      <button class="lightbox-close" onclick="forceCloseLightbox()">×</button>
-      <img id="lightboxImg" class="lightbox-img" src="" alt="preview">
+    <main class="wrap">
+      <section class="hero">
+        <div class="glass hero-card reveal">
+          <div class="hero-glow"></div>
+
+          <div class="top-tools">
+            <button class="theme-btn" id="themeBtn">🌙 / ☀ Theme солих</button>
+            <button class="theme-btn" id="playlistBtn">🎵 Playlist</button>
+            <button class="theme-btn" id="galleryBtn">📸 Gallery</button>
+            <button class="theme-btn" id="logoutBtn">🚪 Logout</button>
+          </div>
+
+          <div class="tag">Our First Anniversary</div>
+          <h1 class="title"><span class="names">Хулан ❤️ Хүсэлбилэг</span></h1>
+          <div class="since">Since 2025.03.21 21:39 • together forever 💖</div>
+
+          <p class="subtitle">
+            Бидний хамт өнгөрүүлсэн мөч бүхэн энгийн нэгэн дурсамж биш,
+            миний зүрхэнд хадгалагдсан хамгийн нандин үе мөч юм.
+          </p>
+
+          <div class="counter">
+            <div class="time-box"><span class="time-num" id="days">0</span><span class="time-label">Өдөр</span></div>
+            <div class="time-box"><span class="time-num" id="hours">0</span><span class="time-label">Цаг</span></div>
+            <div class="time-box"><span class="time-num" id="minutes">0</span><span class="time-label">Минут</span></div>
+            <div class="time-box"><span class="time-num" id="seconds">0</span><span class="time-label">Секунд</span></div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="storyBtn">Бидний түүхийг үзэх ✨</button>
+            <button class="btn btn-secondary" id="playlistBtn2">Бидний playlist 🎵</button>
+          </div>
+
+          <div class="music-status" id="musicStatus">Background music auto play mode бэлэн байна 💞</div>
+
+          <div class="playlist-box" id="playlistBox">
+            <iframe
+              id="playlistFrame"
+              class="playlist-player"
+              src=""
+              title="YouTube player"
+              allow="autoplay; encrypted-media"
+              allowfullscreen>
+            </iframe>
+
+            <div class="playlist-controls">
+              <button class="mini-btn" id="prevSongBtn">⏮ Өмнөх</button>
+              <button class="mini-btn" id="nextSongBtn">Дараагийн ⏭</button>
+              <button class="mini-btn" id="autoPlayBtn">🎧 Auto Play On/Off</button>
+            </div>
+
+            <div class="song-list" id="songList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass section reveal" id="storySection">
+        <h2 class="section-title">Бидний түүх ✨</h2>
+        <p class="section-sub">Бидний хамгийн нандин мөчүүд энд хадгалагдана 💌</p>
+
+        <div class="admin-toggle-wrap">
+          <button class="admin-toggle" id="adminToggle">⚙️ Admin Panel</button>
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+          <div class="admin-title">Admin Panel 💖</div>
+
+          <div class="admin-grid">
+            <div class="panel-box">
+              <h3>Шинэ түүх нэмэх</h3>
+              <div class="form-grid">
+                <input type="text" id="storyDate" placeholder="Огноо (ж: 2026.03.26)">
+                <input type="text" id="storyTitle" placeholder="Гарчиг">
+                <textarea id="storyText" placeholder="Тухайн дурсамжийн тайлбар..."></textarea>
+              </div>
+              <button class="mini-btn" style="margin-top:14px;" id="addStoryBtn">+ Түүх нэмэх</button>
+            </div>
+
+            <div class="panel-box">
+              <h3>Шинэ дуу нэмэх</h3>
+              <div class="form-grid">
+                <input type="text" id="songTitleInput" placeholder="Дууны нэр">
+                <input type="text" id="songLinkInput" placeholder="YouTube link эсвэл video id">
+              </div>
+              <button class="mini-btn" style="margin-top:14px;" id="addSongBtn">+ Дуу нэмэх</button>
+              <div class="hint">YouTube link эсвэл зөвхөн video id оруулж болно.</div>
+            </div>
+
+            <div class="panel-box">
+              <h3>Шинэ зураг нэмэх</h3>
+              <div class="form-grid">
+                <input type="text" id="photoTitleInput" placeholder="Зургийн нэр">
+                <input type="text" id="photoUrlInput" placeholder="Image URL">
+              </div>
+              <button class="mini-btn" style="margin-top:14px;" id="addPhotoBtn">+ Зураг нэмэх</button>
+              <div class="hint">Imgur, Postimages зэрэг сайтаас direct image link paste хийнэ.</div>
+            </div>
+
+            <div class="panel-box">
+              <h3>Туслах товчнууд</h3>
+              <div class="form-grid">
+                <button class="mini-btn" id="playlistBtn3">Playlist харуулах</button>
+                <button class="mini-btn" id="galleryBtn2">Gallery руу очих</button>
+                <button class="mini-btn" id="toggleSlideBtn">▶ / ⏸ Slideshow</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="glass section reveal" id="gallerySection">
+        <h2 class="section-title">Slideshow 💞</h2>
+        <p class="section-sub">Зурагнууд автоматаар слайд хийгдэнэ. Зураг дээр дарвал томорч харагдана.</p>
+
+        <div class="slideshow-wrap">
+          <img id="slideshowImage" class="slideshow-img" src="" alt="slideshow image">
+          <div class="slide-overlay">
+            <div class="slide-title" id="slideTitle">Our Memory</div>
+            <div class="slide-controls">
+              <button class="mini-btn" id="prevSlideBtn">⏮ Prev</button>
+              <button class="mini-btn" id="nextSlideBtn">Next ⏭</button>
+              <button class="mini-btn" id="toggleSlideBtn2">▶ / ⏸ Slideshow</button>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top:22px;">Бидний дурсамжууд 📸</h2>
+        <p class="section-sub">Зураг дээр дарвал томорч харагдана 💖</p>
+        <div class="gallery" id="gallery"></div>
+      </section>
+
+      <div class="footer reveal">
+        Made with love for our first anniversary ❤️
+      </div>
+    </main>
+
+    <div class="lightbox" id="lightbox">
+      <div class="lightbox-box">
+        <button class="lightbox-close" id="closeLightboxBtn">×</button>
+        <img id="lightboxImg" class="lightbox-img" src="" alt="preview">
+      </div>
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      deleteDoc,
+      doc,
+      updateDoc,
+      onSnapshot,
+      query,
+      orderBy,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCeH2APwZVvbCpo4JiAkCP2BkVXBvz_1LA",
+      authDomain: "khulan-khuselbileg.firebaseapp.com",
+      projectId: "khulan-khuselbileg",
+      storageBucket: "khulan-khuselbileg.firebasestorage.app",
+      messagingSenderId: "143445200049",
+      appId: "1:143445200049:web:bd92b9089fd97953882690",
+      measurementId: "G-646JT1RQ2W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
     const anniversaryDate = new Date("2025-03-21T21:39:00");
 
-    const defaultSongs = [
-      { title: "Song 1", videoId: "Cy9_XzRx824" },
-      { title: "Song 2", videoId: "Uol-WiWKSmI" },
-      { title: "Song 3", videoId: "iyKJ8OJI7tc" },
-      { title: "Song 4", videoId: "L4sbDxR22z4" },
-      { title: "Song 5", videoId: "-IsZqfbRWno" },
-      { title: "Song 6", videoId: "owNpbh-UhHs" }
-    ];
-
-    const defaultStories = [
-      {
-        date: "2025.02.14",
-        title: "Анхны болзоо ❤️",
-        text: "Бидний хамгийн анхны, хамгийн гоё дурсамжуудын нэг."
-      },
-      {
-        date: "2025.03.21",
-        title: "Үерхсэн өдөр 💕",
-        text: "Энгийн өдрүүд хүртэл чамтай байхад хамгийн гоё дурсамж болж үлддэг."
-      },
-      {
-        date: "2025.03.28",
-        title: "Анхны үнсэлт 💖",
-        text: "Хамгийн нандин үе."
-      }
-    ];
-
-    const defaultPhotos = [
-      { title: "Memory 1", src: "web.jpg" },
-      { title: "Memory 2", src: "love.jpeg" },
-      { title: "Memory 3", src: "love2.jpeg" },
-      { title: "Memory 4", src: "love3.jpeg" },
-      { title: "Memory 5", src: "love4.jpeg" },
-      { title: "Memory 6", src: "love5.jpeg" },
-      { title: "Memory 7", src: "love6.jpeg" }
-    ];
-
-    let songs = JSON.parse(localStorage.getItem("ourSongsV4")) || defaultSongs;
-    let stories = JSON.parse(localStorage.getItem("ourStoriesV4")) || defaultStories;
-    let photos = JSON.parse(localStorage.getItem("ourPhotosV4")) || defaultPhotos;
-    let autoPlayEnabled = JSON.parse(localStorage.getItem("ourAutoPlayV4"));
-    let savedTheme = localStorage.getItem("ourThemeV4") || "dark";
+    let songs = [];
+    let stories = [];
+    let photos = [];
+    let autoPlayEnabled = JSON.parse(localStorage.getItem("ourAutoPlayShared")) ?? true;
+    let savedTheme = localStorage.getItem("ourThemeShared") || "dark";
     let currentSongIndex = 0;
     let playlistRendered = false;
     let slideshowIndex = 0;
     let slideshowPlaying = true;
     let slideshowInterval = null;
+    let heartsStarted = false;
+    let realtimeStarted = false;
 
-    if (autoPlayEnabled === null) autoPlayEnabled = true;
+    const authScreen = document.getElementById("authScreen");
+    const siteContent = document.getElementById("siteContent");
+    const authMsg = document.getElementById("authMsg");
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginBtn = document.getElementById("loginBtn");
 
     const musicStatus = document.getElementById("musicStatus");
     const playlistBox = document.getElementById("playlistBox");
@@ -1207,36 +1094,19 @@
     const slideshowImage = document.getElementById("slideshowImage");
     const slideTitle = document.getElementById("slideTitle");
 
-    function saveSongs() {
-      localStorage.setItem("ourSongsV4", JSON.stringify(songs));
-    }
-
-    function saveStories() {
-      localStorage.setItem("ourStoriesV4", JSON.stringify(stories));
-    }
-
-    function savePhotos() {
-      localStorage.setItem("ourPhotosV4", JSON.stringify(photos));
-    }
-
     function saveAutoPlay() {
-      localStorage.setItem("ourAutoPlayV4", JSON.stringify(autoPlayEnabled));
+      localStorage.setItem("ourAutoPlayShared", JSON.stringify(autoPlayEnabled));
     }
 
     function saveTheme(theme) {
-      localStorage.setItem("ourThemeV4", theme);
+      localStorage.setItem("ourThemeShared", theme);
     }
 
     function applyTheme(theme) {
-      if (theme === "light") {
-        document.body.classList.add("light-theme");
-      } else {
-        document.body.classList.remove("light-theme");
-      }
+      if (theme === "light") document.body.classList.add("light-theme");
+      else document.body.classList.remove("light-theme");
       saveTheme(theme);
     }
-
-    applyTheme(savedTheme);
 
     function toggleTheme() {
       const nowLight = document.body.classList.contains("light-theme");
@@ -1246,20 +1116,11 @@
     function updateCounter() {
       const now = new Date();
       const diff = now - anniversaryDate;
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      document.getElementById("days").textContent = days;
-      document.getElementById("hours").textContent = hours;
-      document.getElementById("minutes").textContent = minutes;
-      document.getElementById("seconds").textContent = seconds;
+      document.getElementById("days").textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").textContent = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      document.getElementById("minutes").textContent = Math.floor((diff / (1000 * 60)) % 60);
+      document.getElementById("seconds").textContent = Math.floor((diff / 1000) % 60);
     }
-
-    updateCounter();
-    setInterval(updateCounter, 1000);
 
     function createHeart() {
       const heart = document.createElement("div");
@@ -1285,46 +1146,32 @@
       setTimeout(() => heart.remove(), 12000);
     }
 
-    setInterval(createHeart, 280);
-
-    function scrollToStory() {
-      document.getElementById("storySection").scrollIntoView({ behavior: "smooth" });
+    function startHearts() {
+      if (heartsStarted) return;
+      heartsStarted = true;
+      setInterval(createHeart, 280);
+      updateCounter();
+      setInterval(updateCounter, 1000);
     }
 
-    function scrollToGallery() {
-      document.getElementById("gallerySection").scrollIntoView({ behavior: "smooth" });
+    function setupReveal() {
+      const revealElements = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("show");
+        });
+      }, { threshold: 0.15 });
+      revealElements.forEach((el) => observer.observe(el));
     }
-
-    function toggleAdminPanel() {
-      adminPanel.classList.toggle("show");
-    }
-
-    const revealElements = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("show");
-      });
-    }, { threshold: 0.15 });
-    revealElements.forEach((el) => observer.observe(el));
 
     function getVideoId(input) {
       input = input.trim();
-
       if (input.includes("youtube.com/watch?v=")) {
         const url = new URL(input);
         return url.searchParams.get("v");
       }
-
-      if (input.includes("youtu.be/")) {
-        const parts = input.split("youtu.be/");
-        return parts[1].split("?")[0];
-      }
-
-      if (input.includes("youtube.com/embed/")) {
-        const parts = input.split("youtube.com/embed/");
-        return parts[1].split("?")[0];
-      }
-
+      if (input.includes("youtu.be/")) return input.split("youtu.be/")[1].split("?")[0];
+      if (input.includes("youtube.com/embed/")) return input.split("youtube.com/embed/")[1].split("?")[0];
       return input;
     }
 
@@ -1334,7 +1181,6 @@
 
     function renderSongs() {
       songList.innerHTML = "";
-
       if (!songs.length) {
         songList.innerHTML = `<div class="song-card"><div class="song-title">Playlist хоосон байна</div></div>`;
         return;
@@ -1344,28 +1190,45 @@
         const card = document.createElement("div");
         card.className = "song-card";
         if (index === currentSongIndex) card.classList.add("active");
-
         card.innerHTML = `
           <div class="song-left">
             <div class="song-index">${index + 1}</div>
             <div class="song-title">${song.title}</div>
           </div>
           <div class="song-actions">
-            <button class="icon-btn" onclick="playSong(${index})">▶ Play</button>
-            <button class="icon-btn edit" onclick="editSong(${index})">✏ Edit</button>
-            <button class="icon-btn delete" onclick="deleteSong(${index})">🗑 Delete</button>
+            <button class="icon-btn" data-play="${song.id}">▶ Play</button>
+            <button class="icon-btn edit" data-edit-song="${song.id}">✏ Edit</button>
+            <button class="icon-btn delete" data-delete-song="${song.id}">🗑 Delete</button>
           </div>
         `;
         songList.appendChild(card);
       });
     }
 
-    function playSong(index) {
+    function playSongByIndex(index) {
       if (!songs.length) return;
       currentSongIndex = index;
       playlistFrame.src = getEmbedUrl(songs[index].videoId, true);
       musicStatus.textContent = "Одоо тоглож байна: " + songs[index].title;
       playlistBox.style.display = "block";
+      renderSongs();
+    }
+
+    function showPlaylist() {
+      playlistBox.style.display = "block";
+      if (!playlistRendered) {
+        renderSongs();
+        playlistRendered = true;
+      }
+      if (songs.length > 0 && !playlistFrame.src) {
+        playlistFrame.src = getEmbedUrl(songs[currentSongIndex].videoId, autoPlayEnabled);
+      }
+      if (songs.length > 0) {
+        musicStatus.textContent = "Playlist бэлэн: " + songs[currentSongIndex].title;
+      } else {
+        musicStatus.textContent = "Playlist хоосон байна";
+      }
+      playlistBox.scrollIntoView({ behavior: "smooth", block: "center" });
       renderSongs();
     }
 
@@ -1378,131 +1241,8 @@
       renderSongs();
     }
 
-    function showPlaylist() {
-      playlistBox.style.display = "block";
-
-      if (!playlistRendered) {
-        renderSongs();
-        playlistRendered = true;
-      }
-
-      if (songs.length > 0 && !playlistFrame.src) {
-        playlistFrame.src = getEmbedUrl(songs[currentSongIndex].videoId, autoPlayEnabled);
-      }
-
-      if (songs.length > 0) {
-        musicStatus.textContent = "Playlist бэлэн: " + songs[currentSongIndex].title;
-      } else {
-        musicStatus.textContent = "Playlist хоосон байна";
-      }
-
-      playlistBox.scrollIntoView({ behavior: "smooth", block: "center" });
-      renderSongs();
-    }
-
-    function prevSong() {
-      if (!songs.length) return;
-      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-      playSong(currentSongIndex);
-    }
-
-    function nextSong() {
-      if (!songs.length) return;
-      currentSongIndex = (currentSongIndex + 1) % songs.length;
-      playSong(currentSongIndex);
-    }
-
-    function toggleAutoPlay() {
-      autoPlayEnabled = !autoPlayEnabled;
-      saveAutoPlay();
-      musicStatus.textContent = autoPlayEnabled ? "Auto Play аслаа 🎧" : "Auto Play унтарлаа 🔇";
-      if (songs.length && autoPlayEnabled) {
-        playlistFrame.src = getEmbedUrl(songs[currentSongIndex].videoId, true);
-      }
-    }
-
-    function addSong() {
-      const titleInput = document.getElementById("songTitleInput");
-      const linkInput = document.getElementById("songLinkInput");
-
-      const title = titleInput.value.trim();
-      const link = linkInput.value.trim();
-
-      if (!title || !link) {
-        alert("Дууны нэр болон link-ээ бүтэн оруулна уу.");
-        return;
-      }
-
-      const videoId = getVideoId(link);
-      if (!videoId) {
-        alert("YouTube link буруу байна.");
-        return;
-      }
-
-      songs.push({ title, videoId });
-      saveSongs();
-      renderSongs();
-
-      titleInput.value = "";
-      linkInput.value = "";
-
-      musicStatus.textContent = `Шинэ дуу нэмэгдлээ: ${title}`;
-      playlistRendered = true;
-      playlistBox.style.display = "block";
-    }
-
-    function editSong(index) {
-      const current = songs[index];
-      const newTitle = prompt("Шинэ дууны нэр:", current.title);
-      if (newTitle === null) return;
-
-      const newLink = prompt("Шинэ YouTube link эсвэл video id:", current.videoId);
-      if (newLink === null) return;
-
-      const videoId = getVideoId(newLink.trim());
-      if (!newTitle.trim() || !videoId) {
-        alert("Мэдээлэл буруу байна.");
-        return;
-      }
-
-      songs[index] = {
-        title: newTitle.trim(),
-        videoId: videoId
-      };
-
-      saveSongs();
-      renderSongs();
-
-      if (index === currentSongIndex) {
-        playlistFrame.src = getEmbedUrl(videoId, true);
-        musicStatus.textContent = "Дуу шинэчлэгдлээ: " + newTitle.trim();
-      }
-    }
-
-    function deleteSong(index) {
-      if (!confirm("Энэ дууг устгах уу?")) return;
-
-      songs.splice(index, 1);
-
-      if (currentSongIndex >= songs.length) {
-        currentSongIndex = Math.max(0, songs.length - 1);
-      }
-
-      saveSongs();
-      renderSongs();
-
-      if (songs.length) {
-        playlistFrame.src = getEmbedUrl(songs[currentSongIndex].videoId, autoPlayEnabled);
-        musicStatus.textContent = "Дуу устлаа. Одоо: " + songs[currentSongIndex].title;
-      } else {
-        playlistFrame.src = "";
-        musicStatus.textContent = "Playlist хоосон боллоо";
-      }
-    }
-
     function renderStories() {
       timeline.innerHTML = "";
-
       if (!stories.length) {
         timeline.innerHTML = `
           <div class="timeline-item">
@@ -1511,201 +1251,62 @@
               <h3 class="timeline-title">Түүх алга байна</h3>
               <p class="timeline-text">Admin panel ашиглаад шинэ түүх нэмээрэй 💖</p>
             </div>
-          </div>
-        `;
+          </div>`;
         return;
       }
 
-      stories.forEach((story, index) => {
+      stories.forEach((story) => {
         const item = document.createElement("div");
         item.className = "timeline-item";
-
         item.innerHTML = `
           <div class="timeline-dot"></div>
           <div class="timeline-card">
             <div class="timeline-top">
               <div>
-                <div class="timeline-date">${story.date}</div>
-                <h3 class="timeline-title">${story.title}</h3>
+                <div class="timeline-date">${story.date || ""}</div>
+                <h3 class="timeline-title">${story.title || ""}</h3>
               </div>
               <div class="story-actions">
-                <button class="icon-btn edit" onclick="editStory(${index})">✏ Edit</button>
-                <button class="icon-btn delete" onclick="deleteStory(${index})">🗑 Delete</button>
+                <button class="icon-btn edit" data-edit-story="${story.id}">✏ Edit</button>
+                <button class="icon-btn delete" data-delete-story="${story.id}">🗑 Delete</button>
               </div>
             </div>
-            <p class="timeline-text">${story.text}</p>
-          </div>
-        `;
-
+            <p class="timeline-text">${story.text || ""}</p>
+          </div>`;
         timeline.appendChild(item);
       });
     }
 
-    function addStory() {
-      const date = document.getElementById("storyDate").value.trim();
-      const title = document.getElementById("storyTitle").value.trim();
-      const text = document.getElementById("storyText").value.trim();
-
-      if (!date || !title || !text) {
-        alert("Огноо, гарчиг, тайлбараа бүгдийг оруулна уу.");
-        return;
-      }
-
-      stories.push({ date, title, text });
-      saveStories();
-      renderStories();
-
-      document.getElementById("storyDate").value = "";
-      document.getElementById("storyTitle").value = "";
-      document.getElementById("storyText").value = "";
-
-      alert("Шинэ түүх нэмэгдлээ 💖");
-    }
-
-    function editStory(index) {
-      const current = stories[index];
-      const newDate = prompt("Шинэ огноо:", current.date);
-      if (newDate === null) return;
-
-      const newTitle = prompt("Шинэ гарчиг:", current.title);
-      if (newTitle === null) return;
-
-      const newText = prompt("Шинэ тайлбар:", current.text);
-      if (newText === null) return;
-
-      if (!newDate.trim() || !newTitle.trim() || !newText.trim()) {
-        alert("Хоосон утга байж болохгүй.");
-        return;
-      }
-
-      stories[index] = {
-        date: newDate.trim(),
-        title: newTitle.trim(),
-        text: newText.trim()
-      };
-
-      saveStories();
-      renderStories();
-    }
-
-    function deleteStory(index) {
-      if (!confirm("Энэ түүхийг устгах уу?")) return;
-      stories.splice(index, 1);
-      saveStories();
-      renderStories();
-    }
-
-    function escapeQuotes(str) {
-      return str.replace(/'/g, "\\'");
-    }
-
     function renderPhotos() {
       gallery.innerHTML = "";
-
       if (!photos.length) {
         gallery.innerHTML = `
           <div class="photo-card" style="display:grid;place-items:center;padding:30px;">
             <div style="text-align:center;line-height:1.7;color:var(--muted);">
               Зураг алга байна 📸<br>Admin panel ашиглаад зураг нэмээрэй
             </div>
-          </div>
-        `;
+          </div>`;
         updateSlideshow();
         return;
       }
 
-      photos.forEach((photo, index) => {
+      photos.forEach((photo) => {
         const card = document.createElement("div");
         card.className = "photo-card";
-
         card.innerHTML = `
-          <img src="${photo.src}" alt="${photo.title}" onclick="openLightbox('${escapeQuotes(photo.src)}')">
+          <img src="${photo.src}" alt="${photo.title || ""}" data-open-photo="${photo.src}">
           <div class="photo-overlay">
-            <div class="photo-name">${photo.title}</div>
+            <div class="photo-name">${photo.title || "Photo"}</div>
             <div class="photo-actions">
-              <button class="icon-btn edit" onclick="editPhotoTitle(${index})">✏ Edit</button>
-              <button class="icon-btn delete" onclick="deletePhoto(${index})">🗑 Delete</button>
+              <button class="icon-btn edit" data-edit-photo="${photo.id}">✏ Edit</button>
+              <button class="icon-btn delete" data-delete-photo="${photo.id}">🗑 Delete</button>
             </div>
-          </div>
-        `;
+          </div>`;
         gallery.appendChild(card);
       });
 
       updateSlideshow();
     }
-
-    function addPhoto() {
-      const titleInput = document.getElementById("photoTitleInput");
-      const fileInput = document.getElementById("photoFileInput");
-      const title = titleInput.value.trim();
-      const file = fileInput.files[0];
-
-      if (!title || !file) {
-        alert("Зургийн нэр болон файлаа оруулна уу.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        photos.push({
-          title: title,
-          src: e.target.result
-        });
-
-        savePhotos();
-        renderPhotos();
-
-        titleInput.value = "";
-        fileInput.value = "";
-
-        alert("Шинэ зураг нэмэгдлээ 📸");
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function editPhotoTitle(index) {
-      const newTitle = prompt("Шинэ зургийн нэр:", photos[index].title);
-      if (newTitle === null) return;
-      if (!newTitle.trim()) {
-        alert("Хоосон байж болохгүй.");
-        return;
-      }
-
-      photos[index].title = newTitle.trim();
-      savePhotos();
-      renderPhotos();
-    }
-
-    function deletePhoto(index) {
-      if (!confirm("Энэ зургийг устгах уу?")) return;
-
-      photos.splice(index, 1);
-      if (slideshowIndex >= photos.length) slideshowIndex = 0;
-      savePhotos();
-      renderPhotos();
-    }
-
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      lightbox.classList.add("show");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeLightbox(event) {
-      if (event.target === lightbox) {
-        forceCloseLightbox();
-      }
-    }
-
-    function forceCloseLightbox() {
-      lightbox.classList.remove("show");
-      lightboxImg.src = "";
-      document.body.style.overflow = "";
-    }
-
-    document.addEventListener("keydown", function(e) {
-      if (e.key === "Escape") forceCloseLightbox();
-    });
 
     function updateSlideshow() {
       if (!photos.length) {
@@ -1713,10 +1314,9 @@
         slideTitle.textContent = "No photos yet";
         return;
       }
-
       if (slideshowIndex >= photos.length) slideshowIndex = 0;
       slideshowImage.src = photos[slideshowIndex].src;
-      slideTitle.textContent = photos[slideshowIndex].title;
+      slideTitle.textContent = photos[slideshowIndex].title || "Memory";
     }
 
     function nextSlide() {
@@ -1731,35 +1331,321 @@
       updateSlideshow();
     }
 
-    function openCurrentSlide() {
-      if (!photos.length) return;
-      openLightbox(photos[slideshowIndex].src);
+    function toggleSlideshow() {
+      slideshowPlaying = !slideshowPlaying;
     }
 
     function startSlideshow() {
-      stopSlideshow();
+      if (slideshowInterval) clearInterval(slideshowInterval);
       slideshowInterval = setInterval(() => {
         if (slideshowPlaying) nextSlide();
       }, 3500);
     }
 
-    function stopSlideshow() {
-      if (slideshowInterval) {
-        clearInterval(slideshowInterval);
-        slideshowInterval = null;
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("show");
+      lightboxImg.src = "";
+      document.body.style.overflow = "";
+    }
+
+    async function loginOrSignup() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        authMsg.textContent = "";
+      } catch (error) {
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+          authMsg.textContent = "Шинэ account үүслээ 💖";
+        } catch (err) {
+          authMsg.textContent = "Нэвтрэхэд алдаа гарлаа. Email эсвэл password-оо шалга.";
+        }
       }
     }
 
-    function toggleSlideshow() {
-      slideshowPlaying = !slideshowPlaying;
+    function setupRealtime() {
+      if (realtimeStarted) return;
+      realtimeStarted = true;
+
+      const storyQuery = query(collection(db, "stories"), orderBy("createdAt", "desc"));
+      const songQuery = query(collection(db, "songs"), orderBy("createdAt", "asc"));
+      const photoQuery = query(collection(db, "photos"), orderBy("createdAt", "asc"));
+
+      onSnapshot(storyQuery, (snap) => {
+        stories = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderStories();
+      });
+
+      onSnapshot(songQuery, (snap) => {
+        songs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        if (currentSongIndex >= songs.length) currentSongIndex = 0;
+        renderSongs();
+        if (!playlistFrame.src && songs.length) tryAutoPlay();
+      });
+
+      onSnapshot(photoQuery, (snap) => {
+        photos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        if (slideshowIndex >= photos.length) slideshowIndex = 0;
+        renderPhotos();
+      });
     }
 
-    renderSongs();
-    renderStories();
-    renderPhotos();
-    tryAutoPlay();
-    updateSlideshow();
-    startSlideshow();
+    async function addStory() {
+      const date = document.getElementById("storyDate").value.trim();
+      const title = document.getElementById("storyTitle").value.trim();
+      const text = document.getElementById("storyText").value.trim();
+
+      if (!date || !title || !text) {
+        alert("Огноо, гарчиг, тайлбараа бүгдийг оруулна уу.");
+        return;
+      }
+
+      await addDoc(collection(db, "stories"), {
+        date, title, text,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById("storyDate").value = "";
+      document.getElementById("storyTitle").value = "";
+      document.getElementById("storyText").value = "";
+    }
+
+    async function addSong() {
+      const title = document.getElementById("songTitleInput").value.trim();
+      const link = document.getElementById("songLinkInput").value.trim();
+
+      if (!title || !link) {
+        alert("Дууны нэр болон link-ээ бүтэн оруулна уу.");
+        return;
+      }
+
+      const videoId = getVideoId(link);
+      if (!videoId) {
+        alert("YouTube link буруу байна.");
+        return;
+      }
+
+      await addDoc(collection(db, "songs"), {
+        title,
+        videoId,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById("songTitleInput").value = "";
+      document.getElementById("songLinkInput").value = "";
+    }
+
+    async function addPhoto() {
+      const title = document.getElementById("photoTitleInput").value.trim();
+      const src = document.getElementById("photoUrlInput").value.trim();
+
+      if (!title || !src) {
+        alert("Зургийн нэр болон image URL-ээ оруулна уу.");
+        return;
+      }
+
+      await addDoc(collection(db, "photos"), {
+        title,
+        src,
+        createdAt: serverTimestamp()
+      });
+
+      document.getElementById("photoTitleInput").value = "";
+      document.getElementById("photoUrlInput").value = "";
+    }
+
+    async function editStory(id) {
+      const current = stories.find(x => x.id === id);
+      if (!current) return;
+
+      const newDate = prompt("Шинэ огноо:", current.date || "");
+      if (newDate === null) return;
+      const newTitle = prompt("Шинэ гарчиг:", current.title || "");
+      if (newTitle === null) return;
+      const newText = prompt("Шинэ тайлбар:", current.text || "");
+      if (newText === null) return;
+
+      await updateDoc(doc(db, "stories", id), {
+        date: newDate.trim(),
+        title: newTitle.trim(),
+        text: newText.trim()
+      });
+    }
+
+    async function deleteStory(id) {
+      if (!confirm("Энэ түүхийг устгах уу?")) return;
+      await deleteDoc(doc(db, "stories", id));
+    }
+
+    async function editSong(id) {
+      const current = songs.find(x => x.id === id);
+      if (!current) return;
+
+      const newTitle = prompt("Шинэ дууны нэр:", current.title || "");
+      if (newTitle === null) return;
+      const newLink = prompt("Шинэ YouTube link эсвэл video id:", current.videoId || "");
+      if (newLink === null) return;
+
+      const newVideoId = getVideoId(newLink.trim());
+      if (!newTitle.trim() || !newVideoId) return;
+
+      await updateDoc(doc(db, "songs", id), {
+        title: newTitle.trim(),
+        videoId: newVideoId
+      });
+    }
+
+    async function deleteSong(id) {
+      if (!confirm("Энэ дууг устгах уу?")) return;
+      await deleteDoc(doc(db, "songs", id));
+    }
+
+    async function editPhoto(id) {
+      const current = photos.find(x => x.id === id);
+      if (!current) return;
+
+      const newTitle = prompt("Шинэ зургийн нэр:", current.title || "");
+      if (newTitle === null) return;
+      const newSrc = prompt("Шинэ image URL:", current.src || "");
+      if (newSrc === null) return;
+
+      await updateDoc(doc(db, "photos", id), {
+        title: newTitle.trim(),
+        src: newSrc.trim()
+      });
+    }
+
+    async function deletePhoto(id) {
+      if (!confirm("Энэ зургийг устгах уу?")) return;
+      await deleteDoc(doc(db, "photos", id));
+    }
+
+    function scrollToStory() {
+      document.getElementById("storySection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function scrollToGallery() {
+      document.getElementById("gallerySection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    document.getElementById("themeBtn").addEventListener("click", toggleTheme);
+    document.getElementById("playlistBtn").addEventListener("click", showPlaylist);
+    document.getElementById("playlistBtn2").addEventListener("click", showPlaylist);
+    document.getElementById("playlistBtn3").addEventListener("click", showPlaylist);
+    document.getElementById("galleryBtn").addEventListener("click", scrollToGallery);
+    document.getElementById("galleryBtn2").addEventListener("click", scrollToGallery);
+    document.getElementById("storyBtn").addEventListener("click", scrollToStory);
+
+    document.getElementById("adminToggle").addEventListener("click", () => {
+      adminPanel.classList.toggle("show");
+    });
+
+    document.getElementById("addStoryBtn").addEventListener("click", addStory);
+    document.getElementById("addSongBtn").addEventListener("click", addSong);
+    document.getElementById("addPhotoBtn").addEventListener("click", addPhoto);
+
+    document.getElementById("prevSongBtn").addEventListener("click", () => {
+      if (!songs.length) return;
+      currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+      playSongByIndex(currentSongIndex);
+    });
+
+    document.getElementById("nextSongBtn").addEventListener("click", () => {
+      if (!songs.length) return;
+      currentSongIndex = (currentSongIndex + 1) % songs.length;
+      playSongByIndex(currentSongIndex);
+    });
+
+    document.getElementById("autoPlayBtn").addEventListener("click", () => {
+      autoPlayEnabled = !autoPlayEnabled;
+      saveAutoPlay();
+      musicStatus.textContent = autoPlayEnabled ? "Auto Play аслаа 🎧" : "Auto Play унтарлаа 🔇";
+    });
+
+    document.getElementById("prevSlideBtn").addEventListener("click", prevSlide);
+    document.getElementById("nextSlideBtn").addEventListener("click", nextSlide);
+    document.getElementById("toggleSlideBtn").addEventListener("click", toggleSlideshow);
+    document.getElementById("toggleSlideBtn2").addEventListener("click", toggleSlideshow);
+
+    slideshowImage.addEventListener("click", () => {
+      if (photos.length) openLightbox(photos[slideshowIndex].src);
+    });
+
+    document.getElementById("closeLightboxBtn").addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+    });
+
+    loginBtn.addEventListener("click", loginOrSignup);
+    passwordInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") loginOrSignup();
+    });
+
+    songList.addEventListener("click", async (e) => {
+      const playId = e.target.dataset.play;
+      const editId = e.target.dataset.editSong;
+      const deleteId = e.target.dataset.deleteSong;
+
+      if (playId) {
+        const index = songs.findIndex(x => x.id === playId);
+        if (index !== -1) playSongByIndex(index);
+      }
+      if (editId) await editSong(editId);
+      if (deleteId) await deleteSong(deleteId);
+    });
+
+    timeline.addEventListener("click", async (e) => {
+      const editId = e.target.dataset.editStory;
+      const deleteId = e.target.dataset.deleteStory;
+      if (editId) await editStory(editId);
+      if (deleteId) await deleteStory(deleteId);
+    });
+
+    gallery.addEventListener("click", async (e) => {
+      const openSrc = e.target.dataset.openPhoto;
+      const editId = e.target.dataset.editPhoto;
+      const deleteId = e.target.dataset.deletePhoto;
+
+      if (openSrc) openLightbox(openSrc);
+      if (editId) await editPhoto(editId);
+      if (deleteId) await deletePhoto(deleteId);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authScreen.classList.add("hidden");
+        siteContent.classList.remove("hidden");
+        applyTheme(savedTheme);
+        startHearts();
+        setupReveal();
+        setupRealtime();
+        startSlideshow();
+      } else {
+        authScreen.classList.remove("hidden");
+        siteContent.classList.add("hidden");
+      }
+    });
   </script>
 </body>
 </html>
