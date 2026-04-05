@@ -1353,28 +1353,27 @@
       document.body.style.overflow = "";
     }
 
-    async function loginOrSignup() {
-       const email = emailInput.value.trim();
-       const password = passwordInput.value.trim();
+async function loginOrSignup() {
+  const allowedEmail = "treemax12345@gmail.com";
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
-       const ALLOWED_EMAIL = "double_kh0321@gmail.com"; // өөрийн email-ээ энд бич
-
-       if (!email || !password) {
-       authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
-       return;
+  if (!email || !password) {
+    authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
+    return;
   }
 
-       if (email !== ALLOWED_EMAIL) {
-       authMsg.textContent = "Энэ email зөвшөөрөгдөөгүй байна.";
-       return;
+  if (email !== allowedEmail) {
+    authMsg.textContent = "Энэ email-ээр нэвтрэх эрхгүй байна.";
+    return;
   }
 
-       try {
-       await signInWithEmailAndPassword(auth, email, password);
-       authMsg.textContent = "";
-  }    catch (err) {
-       authMsg.textContent = "Email эсвэл password буруу байна.";
-       console.error(err);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    authMsg.textContent = "";
+  } catch (error) {
+    authMsg.textContent = "Email эсвэл password буруу байна.";
+    console.error(error);
   }
 }
 
