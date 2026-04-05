@@ -1354,20 +1354,24 @@
     }
 
 async function loginOrSignup() {
-  const allowedEmail = "treemax12345@gmail.com";
+  const allowedEmail = "double_kh0321@gmail.com";
+
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
+  // Хоосон шалгах
   if (!email || !password) {
     authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
     return;
   }
 
-  if (email !== allowedEmail) {
+  // Зөвхөн нэг email зөвшөөрөх (case insensitive)
+  if (email.toLowerCase() !== allowedEmail.toLowerCase()) {
     authMsg.textContent = "Энэ email-ээр нэвтрэх эрхгүй байна.";
     return;
   }
 
+  // Login хийх
   try {
     await signInWithEmailAndPassword(auth, email, password);
     authMsg.textContent = "";
