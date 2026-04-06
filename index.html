@@ -2,7 +2,7 @@
 <html lang="mn">
 <head>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff7aa8"> 
+  <meta name="theme-color" content="#ff7aa8">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>💖 Happy 1 Year Anniversary 💖</title>
@@ -749,6 +749,48 @@
       flex:1;
     }
 
+    .album-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:22px;
+      min-height:260px;
+      cursor:pointer;
+      background:var(--card);
+      border:1px solid var(--glass-border);
+      box-shadow:var(--shadow);
+    }
+
+    .album-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform 0.4s ease;
+    }
+
+    .album-card:hover img{
+      transform:scale(1.05);
+    }
+
+    .album-overlay{
+      position:absolute;
+      inset:auto 0 0 0;
+      padding:16px;
+      background:linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.05));
+    }
+
+    .album-name{
+      font-size:18px;
+      font-weight:700;
+      color:white;
+      margin-bottom:4px;
+    }
+
+    .album-count{
+      font-size:13px;
+      color:rgba(255,255,255,0.85);
+    }
+
     .lightbox{
       position:fixed;
       inset:0;
@@ -855,6 +897,7 @@
     }
   </style>
 </head>
+
 <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -864,7 +907,8 @@
     });
   }
 </script>
-  <body>
+
+<body>
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div id="authScreen" class="auth-screen hidden">
@@ -874,7 +918,7 @@
       <p class="auth-sub">Энэ сайтыг үзэхийн тулд email, password-оор нэвтэрнэ үү.</p>
       <input class="auth-input" id="emailInput" type="email" placeholder="Email">
       <input class="auth-input" id="passwordInput" type="password" placeholder="Password">
-      <button class="auth-btn" id="loginBtn">Login / Sign up</button>
+      <button class="auth-btn" id="loginBtn">Login</button>
       <div class="auth-msg" id="authMsg"></div>
     </div>
   </div>
@@ -979,11 +1023,12 @@
             <div class="panel-box">
               <h3>Шинэ зураг нэмэх</h3>
               <div class="form-grid">
+                <input type="text" id="photoAlbumInput" placeholder="Album нэр (ж: Studio pics)">
                 <input type="text" id="photoTitleInput" placeholder="Зургийн нэр">
                 <input type="text" id="photoUrlInput" placeholder="Image URL">
               </div>
               <button class="mini-btn" style="margin-top:14px;" id="addPhotoBtn">+ Зураг нэмэх</button>
-              <div class="hint">Imgur, Postimages зэрэг сайтаас direct image link paste хийнэ.</div>
+              <div class="hint">Album нэр ижил байвал нэг цомог дотор орно.</div>
             </div>
 
             <div class="panel-box">
@@ -1016,9 +1061,19 @@
           </div>
         </div>
 
-        <h2 class="section-title" style="margin-top:22px;">Бидний дурсамжууд 📸</h2>
-        <p class="section-sub">Зураг дээр дарвал томорч харагдана 💖</p>
-        <div class="gallery" id="gallery"></div>
+        <div id="albumView">
+          <h2 class="section-title" style="margin-top:22px;">Бидний album-ууд 📚</h2>
+          <p class="section-sub">Album дээр дарвал доторх зургууд нээгдэнэ 💖</p>
+          <div class="gallery" id="albumGrid"></div>
+        </div>
+
+        <div id="photoView" class="hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+            <h2 class="section-title" id="albumTitle" style="margin:0;">Album</h2>
+            <button class="mini-btn" id="backToAlbumsBtn">← Album руу буцах</button>
+          </div>
+          <div class="gallery" id="gallery"></div>
+        </div>
       </section>
 
       <div class="footer reveal">
@@ -1063,7 +1118,7 @@
       messagingSenderId: "143445200049",
       appId: "1:143445200049:web:bd92b9089fd97953882690",
       measurementId: "G-646JT1RQ2W"
-};   
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -1083,6 +1138,7 @@
     let slideshowInterval = null;
     let heartsStarted = false;
     let realtimeStarted = false;
+    let selectedAlbum = null;
 
     const authScreen = document.getElementById("authScreen");
     const siteContent = document.getElementById("siteContent");
@@ -1097,6 +1153,11 @@
     const songList = document.getElementById("songList");
     const timeline = document.getElementById("timeline");
     const gallery = document.getElementById("gallery");
+    const albumGrid = document.getElementById("albumGrid");
+    const albumView = document.getElementById("albumView");
+    const photoView = document.getElementById("photoView");
+    const albumTitle = document.getElementById("albumTitle");
+    const backToAlbumsBtn = document.getElementById("backToAlbumsBtn");
     const bgHearts = document.getElementById("bgHearts");
     const adminPanel = document.getElementById("adminPanel");
     const lightbox = document.getElementById("lightbox");
@@ -1288,19 +1349,59 @@
     }
 
     function renderPhotos() {
+      albumGrid.innerHTML = "";
       gallery.innerHTML = "";
+
       if (!photos.length) {
-        gallery.innerHTML = `
+        albumGrid.innerHTML = `
           <div class="photo-card" style="display:grid;place-items:center;padding:30px;">
             <div style="text-align:center;line-height:1.7;color:var(--muted);">
-              Зураг алга байна 📸<br>Admin panel ашиглаад зураг нэмээрэй
+              Album алга байна 📸<br>Admin panel ашиглаад зураг нэмээрэй
             </div>
           </div>`;
         updateSlideshow();
         return;
       }
 
-      photos.forEach((photo) => {
+      const grouped = {};
+
+      photos.forEach(photo => {
+        const key = photo.album || "Other";
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(photo);
+      });
+
+      Object.entries(grouped).forEach(([albumName, items]) => {
+        const cover = items[0];
+
+        const card = document.createElement("div");
+        card.className = "album-card";
+        card.dataset.album = albumName;
+        card.innerHTML = `
+          <img src="${cover.src}" alt="${albumName}">
+          <div class="album-overlay">
+            <div class="album-name">${albumName}</div>
+            <div class="album-count">${items.length} зураг</div>
+          </div>
+        `;
+        albumGrid.appendChild(card);
+      });
+
+      updateSlideshow();
+    }
+
+    function openAlbum(albumName) {
+      selectedAlbum = albumName;
+      albumTitle.textContent = albumName;
+
+      albumView.classList.add("hidden");
+      photoView.classList.remove("hidden");
+
+      gallery.innerHTML = "";
+
+      const albumPhotos = photos.filter(p => (p.album || "Other") === albumName);
+
+      albumPhotos.forEach((photo) => {
         const card = document.createElement("div");
         card.className = "photo-card";
         card.innerHTML = `
@@ -1311,11 +1412,10 @@
               <button class="icon-btn edit" data-edit-photo="${photo.id}">✏ Edit</button>
               <button class="icon-btn delete" data-delete-photo="${photo.id}">🗑 Delete</button>
             </div>
-          </div>`;
+          </div>
+        `;
         gallery.appendChild(card);
       });
-
-      updateSlideshow();
     }
 
     function updateSlideshow() {
@@ -1364,33 +1464,29 @@
       document.body.style.overflow = "";
     }
 
-async function loginOrSignup() {
-  const allowedEmail = "double_kh0321@gmail.com";
+    async function loginOrSignup() {
+      const allowedEmail = "double_kh0321@gmail.com";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
 
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
+      if (!email || !password) {
+        authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
+        return;
+      }
 
-  // Хоосон шалгах
-  if (!email || !password) {
-    authMsg.textContent = "Email, password-оо бүтэн оруулна уу.";
-    return;
-  }
+      if (email.toLowerCase() !== allowedEmail.toLowerCase()) {
+        authMsg.textContent = "Энэ email-ээр нэвтрэх эрхгүй байна.";
+        return;
+      }
 
-  // Зөвхөн нэг email зөвшөөрөх (case insensitive)
-  if (email.toLowerCase() !== allowedEmail.toLowerCase()) {
-    authMsg.textContent = "Энэ email-ээр нэвтрэх эрхгүй байна.";
-    return;
-  }
-
-  // Login хийх
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    authMsg.textContent = "";
-  } catch (error) {
-    authMsg.textContent = "Email эсвэл password буруу байна.";
-    console.error(error);
-  }
-}
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        authMsg.textContent = "";
+      } catch (error) {
+        authMsg.textContent = "Email эсвэл password буруу байна.";
+        console.error(error);
+      }
+    }
 
     function setupRealtime() {
       if (realtimeStarted) return;
@@ -1465,20 +1561,23 @@ async function loginOrSignup() {
     }
 
     async function addPhoto() {
+      const album = document.getElementById("photoAlbumInput").value.trim();
       const title = document.getElementById("photoTitleInput").value.trim();
       const src = document.getElementById("photoUrlInput").value.trim();
 
-      if (!title || !src) {
-        alert("Зургийн нэр болон image URL-ээ оруулна уу.");
+      if (!album || !title || !src) {
+        alert("Album, зургийн нэр, image URL-ээ бүгдийг оруулна уу.");
         return;
       }
 
       await addDoc(collection(db, "photos"), {
+        album,
         title,
         src,
         createdAt: serverTimestamp()
       });
 
+      document.getElementById("photoAlbumInput").value = "";
       document.getElementById("photoTitleInput").value = "";
       document.getElementById("photoUrlInput").value = "";
     }
@@ -1533,12 +1632,17 @@ async function loginOrSignup() {
       const current = photos.find(x => x.id === id);
       if (!current) return;
 
+      const newAlbum = prompt("Шинэ album нэр:", current.album || "Other");
+      if (newAlbum === null) return;
+
       const newTitle = prompt("Шинэ зургийн нэр:", current.title || "");
       if (newTitle === null) return;
+
       const newSrc = prompt("Шинэ image URL:", current.src || "");
       if (newSrc === null) return;
 
       await updateDoc(doc(db, "photos", id), {
+        album: newAlbum.trim(),
         title: newTitle.trim(),
         src: newSrc.trim()
       });
@@ -1554,6 +1658,8 @@ async function loginOrSignup() {
     }
 
     function scrollToGallery() {
+      photoView.classList.add("hidden");
+      albumView.classList.remove("hidden");
       document.getElementById("gallerySection").scrollIntoView({ behavior: "smooth" });
     }
 
@@ -1642,6 +1748,18 @@ async function loginOrSignup() {
       if (openSrc) openLightbox(openSrc);
       if (editId) await editPhoto(editId);
       if (deleteId) await deletePhoto(deleteId);
+    });
+
+    albumGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".album-card");
+      if (!card) return;
+      openAlbum(card.dataset.album);
+    });
+
+    backToAlbumsBtn.addEventListener("click", () => {
+      selectedAlbum = null;
+      photoView.classList.add("hidden");
+      albumView.classList.remove("hidden");
     });
 
     document.addEventListener("keydown", (e) => {
