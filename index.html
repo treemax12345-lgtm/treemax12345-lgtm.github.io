@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff7aa8"> 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>💖 Happy 1 Year Anniversary 💖</title>
@@ -853,7 +855,16 @@
     }
   </style>
 </head>
-<body>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch((err) => console.log("Service Worker failed", err));
+    });
+  }
+</script>
+  <body>
   <div class="bg-hearts" id="bgHearts"></div>
 
   <div id="authScreen" class="auth-screen hidden">
