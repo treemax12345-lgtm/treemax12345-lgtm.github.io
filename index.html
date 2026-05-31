@@ -5,6 +5,10 @@
   <meta name="theme-color" content="#ff4d80">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Хүсэлбилэг & Хулан">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>💖 Хүсэлбилэг & Хулан</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -13,7 +17,45 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <style>
-/* ===== VARS ===== */
+/* ===== MOBILE APP OPTIMIZATIONS ===== */
+*{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
+input,textarea,select{-webkit-tap-highlight-color:transparent;-webkit-appearance:none;}
+html{-webkit-overflow-scrolling:touch;overflow-scrolling:touch;}
+
+/* Touch feedback */
+.btn:active{transform:scale(.96)!important;opacity:.9;}
+.mini-btn:active{transform:scale(.95)!important;}
+.pb:active{transform:scale(.88)!important;}
+.bnav-btn:active{transform:scale(.9);}
+.album-card:active{transform:translateY(-3px);}
+.photo-card:active img{transform:scale(1.03);}
+
+/* Touch-friendly sizes on mobile */
+@media(pointer:coarse){
+  .progress-bar{height:10px;margin-bottom:12px;}
+  .pb{width:50px;height:50px;font-size:20px;}
+  .pb.play-btn{width:62px;height:62px;font-size:24px;}
+  .vol-slider{width:100%;}
+  .vol-wrap{width:100%;margin-top:8px;}
+  .mini-btn{padding:12px 18px;font-size:14px;}
+  .icon-btn{padding:10px 14px;font-size:13px;}
+  .song-card{padding:16px;}
+  .time-box{min-width:72px;padding:20px 12px;}
+  .bucket-item{padding:16px 18px;}
+  .bnav-btn{padding:10px 14px;font-size:22px;}
+  .auth-input{padding:17px 18px;font-size:16px;}/* iOS zoom засах */
+  .form-grid input,.form-grid textarea,.form-grid select{font-size:16px;}/* iOS zoom засах */
+}
+
+/* Safe area - notch утаснуудад */
+.wrap{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
+.bnav{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+nav{padding-top:env(safe-area-inset-top);}
+
+/* Smooth transitions */
+.section,.hero-card,.glass{will-change:transform;}
+.slideshow-img{will-change:transform;}
+.disc{will-change:transform;}
 :root{
   --bg1:#0c0018;--bg2:#1c0530;--bg3:#2e0840;
   --pink:#ff4d80;--pink2:#ff80ab;--pink-soft:#ffb3c8;--accent:#c77dff;
@@ -588,8 +630,8 @@ if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serv
   <div class="anniv-overlay hidden" id="annivOverlay">
     <div class="anniv-box">
       <span class="anniv-emoji">🎉</span>
-      <div class="anniv-title">Ойн мэнд! 💖</div>
-      <p class="anniv-text">Өнөөдөр бидний хамтын амьдрал эхэлсэн өдрийн ой тохиож байна.<br>Чамтай хамт байгаадаа баяртай байна 💕</p>
+      <div class="anniv-title" id="annivPopupTitle">Ойн мэнд! 💖</div>
+      <p class="anniv-text" id="annivPopupText">Өнөөдөр бидний хамтын амьдрал эхэлсэн өдрийн ой тохиож байна.<br>Чамтай хамт байгаадаа баяртай байна 💕</p>
       <button class="btn btn-primary" onclick="document.getElementById('annivOverlay').classList.add('hidden')">Баярлалаа 💖</button>
     </div>
   </div>
@@ -628,6 +670,14 @@ let autoPlay=JSON.parse(localStorage.getItem("ourAutoPlay")??"true");
 let savedTheme=localStorage.getItem("ourTheme")||"dark";
 let curSong=0,slideIdx=0,slidePlaying=true,slideTimer=null;
 let heartsGo=false,rtGo=false,ytP=null,progTimer=null,curEmail="";
+
+/* ===== SWIPE GESTURE (slideshow) ===== */
+let swipeX=0;
+$("slideshowImage").addEventListener("touchstart",e=>{swipeX=e.touches[0].clientX;},{passive:true});
+$("slideshowImage").addEventListener("touchend",e=>{
+  const diff=swipeX-e.changedTouches[0].clientX;
+  if(Math.abs(diff)>50){diff>0?window.nextSlide():window.prevSlide();}
+},{passive:true});
 
 /* ===== CURSOR ===== */
 const cur=$("cur"),curDot=$("curDot");
@@ -991,6 +1041,36 @@ function updateCounters(){
   $("nminutes").textContent=Math.floor(nd/6e4)%60;$("nseconds").textContent=Math.floor(nd/1e3)%60;
 }
 
+/* ===== ANNIVERSARY YEAR CALC ===== */
+function calcYears(){
+  const now=new Date();
+  const annivThisYear=new Date(now.getFullYear(),2,21); // March 21
+  let y=now.getFullYear()-2025;
+  if(now<annivThisYear)y--;
+  return Math.max(1,y);
+}
+function getOrdinal(n){
+  const o=["","First","Second","Third","Fourth","Fifth","Sixth","Seventh","Eighth","Ninth","Tenth"];
+  return o[n]||(n+"th");
+}
+function getMon(n){
+  const m=["","Нэг","Хоёр","Гурав","Дөрөв","Тав","Зургаа","Долоо","Найм","Ес","Арав"];
+  return (m[n]||n)+" жилийн ой";
+}
+function applyAnnivTexts(){
+  const y=calcYears();
+  // Typewriter text
+  const title=`Happy ${y} Year${y>1?"s":""} Anniversary 💖`;
+  typeWriter($("introTitle"),title);
+  // Tag
+  $("annivTag").textContent=`Our ${getOrdinal(y)} Anniversary`;
+  // Since text
+  $("annivSince").textContent=`Since 2025.03.21 21:39 • ${y} жил хамт байна 💖`;
+  // Popup texts
+  $("annivPopupTitle").textContent=`${getMon(y)}! 💖`;
+  $("annivPopupText").innerHTML=`Өнөөдөр бидний хамт байсны <b>${y} жил</b> тохиож байна.<br>Чамтай хамт байгаадаа баяртай байна 💕`;
+}
+
 /* ===== ANNIVERSARY CHECK ===== */
 function checkAnniversary(){
   const now=new Date();
@@ -1102,8 +1182,7 @@ onAuthStateChanged(auth,user=>{
     $("bucketAdminWrap").classList.remove("hidden");
     applyTheme(savedTheme);
     fireConfetti();
-    startHearts();
-    typeWriter($("introTitle"),"Happy 1 Year Anniversary 💖");
+    applyAnnivTexts();
     setupRealtime();startSlide();initMap();
     setInterval(updateCounters,1000);updateCounters();
     checkAnniversary();
