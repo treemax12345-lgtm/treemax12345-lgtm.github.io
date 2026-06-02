@@ -345,18 +345,6 @@ body.light .slide-title{color:var(--text);}
 .stat-num{display:block;font-family:'Playfair Display',serif;font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;position:relative;}
 .stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;position:relative;}
 
-/* ===== LOADER ===== */
-#loader{position:fixed;inset:0;z-index:999999;background:linear-gradient(160deg,#0c0018,#1c0530 55%,#2e0840);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .9s ease,transform .9s ease;}
-#loader.fade{opacity:0;transform:scale(1.04);pointer-events:none;}
-.ld-emoji{font-size:80px;animation:loaderBeat 1.2s ease-in-out infinite;}
-.ld-name{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;background:linear-gradient(120deg,#fff,#ffb3c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.ld-dots{display:flex;gap:10px;}
-.ld-dots span{width:9px;height:9px;border-radius:50%;background:#ff4d80;animation:ldDot 1.4s ease-in-out infinite;}
-.ld-dots span:nth-child(2){animation-delay:.2s;}
-.ld-dots span:nth-child(3){animation-delay:.4s;}
-@keyframes loaderBeat{0%,100%{transform:scale(1);}14%{transform:scale(1.35);}28%{transform:scale(1);}42%{transform:scale(1.22);}70%{transform:scale(1);}}
-@keyframes ldDot{0%,80%,100%{transform:scale(.6);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
-
 /* ===== SAKURA PETALS ===== */
 .petal{position:absolute;bottom:-30px;pointer-events:none;animation:petalFall linear forwards;filter:drop-shadow(0 2px 6px rgba(255,150,180,.35));}
 .petal::before{content:'';display:block;width:var(--pw,12px);height:var(--ph,16px);background:radial-gradient(ellipse at 30% 30%,#fff5f8,#ffb7c5 50%,#ff8fab);border-radius:50% 0 50% 0;transform:rotate(var(--rot,0deg));}
@@ -407,13 +395,6 @@ body.light .slide-title{color:var(--text);}
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 </script>
 <body>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="ld-emoji">💖</div>
-  <div class="ld-name">Хүсэлбилэг & Хулан</div>
-  <div class="ld-dots"><span></span><span></span><span></span></div>
-</div>
 
 <!-- CURSOR -->
 <div class="cur" id="cur">❤️</div>
@@ -749,13 +730,6 @@ let autoPlay=JSON.parse(localStorage.getItem("ourAutoPlay")??"true");
 let savedTheme=localStorage.getItem("ourTheme")||"dark";
 let curSong=0,slideIdx=0,slidePlaying=true,slideTimer=null;
 let heartsGo=false,rtGo=false,ytP=null,progTimer=null,curEmail="";
-
-/* ===== LOADER HIDE ===== */
-function hideLoader(){
-  const l=$("loader");if(!l)return;
-  l.classList.add("fade");
-  setTimeout(()=>{l.style.display="none";},900);
-}
 
 /* ===== SAKURA PETALS (replaces hearts) ===== */
 const PETAL_COLORS=[
@@ -1369,7 +1343,6 @@ onAuthStateChanged(auth,user=>{
     setTimeout(updateStats,2500);setInterval(updateStats,60000);
     checkAnniversary();
     setTimeout(()=>{initGSAP();init3DTilt();initParallax();},300);
-    hideLoader();
     checkAnniversary();
     setTimeout(()=>{initGSAP();init3DTilt();},300);
   } else {
