@@ -1,6 +1,5 @@
 const CACHE = "site-v1";
 
-// Кэшлэх файлууд
 const STATIC = [
   "/",
   "/index.html",
@@ -19,7 +18,8 @@ const STATIC = [
 // Суулгахад файлуудыг кэшлэнэ
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(STATIC.map(u => new Request(u, {cache:"reload"}))))
+    caches.open(CACHE)
+      .then(c => c.addAll(STATIC))
       .catch(() => {})
   );
   self.skipWaiting();
@@ -38,7 +38,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const url = e.request.url;
 
-  // Firebase, YouTube, CDN — зөвхөн network (кэш биш)
+  // Firebase, CDN, гадаад — зөвхөн network
   if (
     url.includes("firebase") || url.includes("gstatic") ||
     url.includes("googleapis") || url.includes("youtube") ||
@@ -46,15 +46,14 @@ self.addEventListener("fetch", e => {
     url.includes("unpkg") || url.includes("fonts.g") ||
     url.includes("openstreetmap") || url.includes("tile.")
   ) {
-    e.respondWith(fetch(e.request).catch(() => new Response("", {status:503})));
+    e.respondWith(fetch(e.request).catch(() => new Response("", { status: 503 })));
     return;
   }
 
-  // Өөрийн файлууд — Network эхлэж, алдаатай бол кэш
+  // Өөрийн файлууд — network эхэлж, алдаатай бол кэш
   e.respondWith(
     fetch(e.request)
       .then(res => {
-        // Шинэ хувилбарыг кэшэд хадгална
         if (res.ok) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
