@@ -1,4 +1,4 @@
-const CACHE = "v5";
+const CACHE = "v6";
 const STATIC = ["/", "/index.html", "/manifest.json"];
 
 // Суулгах үед үндсэн файлуудыг cache-лна
